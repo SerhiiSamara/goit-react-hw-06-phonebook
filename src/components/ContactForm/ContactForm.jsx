@@ -1,17 +1,16 @@
 import { useDispatch } from 'react-redux';
 import { addContact } from 'redux/contactsSlice';
 import { useSelector } from 'react-redux';
+import { useState } from 'react';
 
 import { Label, Form, Input } from './ContactForm.styled';
-import { getContacts, getName, getNumber } from 'redux/selectors';
-import { changeName } from 'redux/nameSlice';
-import { changeNumber } from 'redux/numberSlice';
+import { getContacts } from 'redux/selectors';
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(getContacts);
-  const name = useSelector(getName);
-  const number = useSelector(getNumber);
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -23,18 +22,18 @@ export const ContactForm = () => {
       return;
     }
     dispatch(addContact(form.elements.name.value, form.elements.number.value));
-    dispatch(changeName(''));
-    dispatch(changeNumber(''));
+    setName('');
+    setNumber('');
   };
 
   const handleChange = e => {
     switch (e.target.name) {
       case 'name':
-        dispatch(changeName(e.target.value));
+        setName(e.target.value);
         break;
 
       case 'number':
-        dispatch(changeNumber(e.target.value));
+        setNumber(e.target.value);
         break;
 
       default:
